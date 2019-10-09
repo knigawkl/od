@@ -3,7 +3,7 @@ Napisz algorytm obliczający entropię łańcucha bajtów. Prawdopodobieństwo s
 na podstawie ich częstotliwości występowania w łańcuchu.
 """
 import math
-from a1 import encrypt
+from a5 import encrypt, create_key
 
 txt = "A complete sentence must have, at minimum, three things: a subject, verb, and an object. The subject is " \
       "typically a noun or a pronoun. And, if there's a subject, there's bound to be a verb because all verbs need a " \
@@ -22,7 +22,9 @@ def entropy(string):
     return entropy
 
 
-enc = encrypt(30, txt)
+key = create_key("klucznik")
+enc = encrypt(txt, key)
+
 
 print(entropy(txt))
 print(entropy(enc))
