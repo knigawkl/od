@@ -24,7 +24,7 @@ def entropy(string):
 
 key = create_key("klucznik")
 enc = encrypt(txt, key)
-
+print(enc)
 
 print(entropy(txt))
 print(entropy(enc))
