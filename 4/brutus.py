@@ -16,7 +16,7 @@ def decrypt_crypt(hash):
     for i, plain in enumerate(product(key_alphabet, repeat=key_length)):
         plain = "".join(plain)
 
-        if hash == crypt.crypt(plain, salt):
+        if hash == plain:# crypt.crypt(plain, salt):
             print(hash)
             return plain
 
@@ -24,8 +24,10 @@ def decrypt_crypt(hash):
 plain = 'sto'
 h = crypt.crypt(plain)
 
-recoverd = decrypt_crypt(h)
-if recoverd:
-    print(f'Hasło to: {recoverd}')
-else:
-    print('Nie udało się znaleźć hasła')
+for i in range(10000000):
+	recoverd = decrypt_crypt(h)
+	if recoverd:
+	    print(f'Hasło to: {recoverd}')
+	else:
+		pass
+	    # print('Nie udało się znaleźć hasła')
