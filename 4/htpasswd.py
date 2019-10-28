@@ -4,10 +4,13 @@ import random
 
 
 def salt():
+    '''
     znaki = 'abcdefghijklmnopqrstuvwxyz' \
             'ABCDEFGHIJKLMNOPQRSTUVWXYZ' \
             '0123456789/.'
     return random.choice(znaki) + random.choice(znaki)
+    '''
+    return "Nv"
 
 
 class HtpasswdFile:
@@ -33,7 +36,7 @@ class HtpasswdFile:
         open(self.filename, 'w').writelines(["%s:%s\n" % (entry[0], entry[1]) for entry in self.entries])
 
     def update(self, username, pwhash):
-        # pwhash = crypt.crypt(pwhash, salt())
+        pwhash = crypt.crypt(pwhash, salt())
         matching_entries = [entry for entry in self.entries
                             if entry[0] == username]
 
@@ -49,5 +52,7 @@ class HtpasswdFile:
 
 if __name__ == "__main__":
     htp = HtpasswdFile('db')
-    htp.update('adam', 'dupa')
+    htp.update('ala', 'ala')
+    htp.update('ela', 'haslo')
+    htp.update('ola', 'inne')	
     htp.save()
