@@ -39,22 +39,22 @@ def decrypt_ECB_serial(key, encrypted_block):
     return bytes(vector)
 
 
-def en_mapper(i):
-    offset = i * block_size
-    block = bytes(shared_data[offset:offset + block_size])
-    for j in range(1000):
-        encrypted = des.decrypt(block)
-        block = encrypted
-    output_data[offset:offset + block_size] = bytearray(encrypted)
-    return i
-
-
 plain_text = "alamakot" * 1000
 key = "haslo123"
 iv = get_random_bytes(8)
 block_size = 8
 no_blocks = int(len(plain_text) / block_size)
 plain_text = bytearray(plain_text, 'utf-8')
+
+
+def en_mapper(i):
+    offset = i * block_size
+    block = bytes(shared_data[offset:offset + block_size])
+    for j in range(1000):
+        encrypted = des.encrypt(block)
+        block = encrypted
+    output_data[offset:offset + block_size] = bytearray(encrypted)
+    return i
 
 
 des = DES.new(key)
