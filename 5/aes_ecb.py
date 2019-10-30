@@ -39,7 +39,7 @@ pool.map(en_mapper, range(no_blocks))
 print('ECB encrypt time parallel: ', (time.time() - starttime))
 encrypted = bytes(output_data)
 
-'''
+
 def de_mapper(i):
     offset = i * block_size
     block = bytes(share_data[offset:offset + block_size])
@@ -51,15 +51,14 @@ def de_mapper(i):
 
 
 aes = AES.new(key, AES.MODE_ECB)
-share_data = multiprocessing.RawArray(ctypes.c_ubyte, plain_text)
-out_data = multiprocessing.RawArray(ctypes.c_ubyte, plain_text)
+share_data = multiprocessing.RawArray(ctypes.c_ubyte, encrypted)
+out_data = multiprocessing.RawArray(ctypes.c_ubyte, encrypted)
 pool = multiprocessing.Pool(8)
 starttime = time.time()
 pool.map(de_mapper, range(no_blocks))
 print('ECB Decrypt time para: ', (time.time() - starttime))
 decrypted = bytes(out_data)
 print(decrypted.decode('latin-1'))
-'''
 
 
 def decrypt_ECB_serial(key, encrypted_block):

@@ -1,11 +1,13 @@
 import sys
 import hashlib
 
+
 def hash_check(n1, n2, howManyBytes):
     h1 = hashlib.sha256(n1.encode()).hexdigest()
     h2 = hashlib.sha256(n2.encode()).hexdigest()
-    print(h1[:howManyBytes], h1[howManyBytes:] )
-    print(h2[:howManyBytes], h2[howManyBytes:] )
+    print(h1[:howManyBytes], h1[howManyBytes:])
+    print(h2[:howManyBytes], h2[howManyBytes:])
+
 
 def match(c, howManyBytes):
     base = {}
@@ -16,7 +18,6 @@ def match(c, howManyBytes):
         xhash = hashlib.sha256(data.encode()).hexdigest()[:howManyBytes]
         if xhash in base.keys():
             # print(base)
-            print('Gotcha!')
             print('Hash:', xhash, 'Index:', base.get(xhash))
             print('Current index:', i)
             return base.get(xhash), i
