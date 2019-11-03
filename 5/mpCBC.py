@@ -35,5 +35,29 @@ no_blocks = int(len(plain_text)/block_size)
 starttime = time.time()
 encryptedCBC = encrypt_CBC_serial(key, plain_text, iv)
 print('CBC Encrypt time serial: ', (time.time() - starttime))
-#print("Encrypted CBC: ", encryptedCBC)
+print("Encrypted CBC: ", encryptedCBC)
 
+
+# wziac szyfrogram, zdeszyfrowac, i xorowac z poprzednim kryptogramem (iv?) n-1
+def de_mapper(i):
+    offset = i * block_size
+    block = bytes(share_data[offset:offset + block_size])
+    for j in range(1000):
+        decrypted = des.decrypt(block)
+        block = decrypted
+    print(type(share_data[offset-8:offset + block_size-8]), type(decrypted))
+    decrypted = xor64(share_data[offset-8:offset + block_size-8], decrypted)
+    out_data[offset:offset + block_size] = bytearray(decrypted)
+    return i
+
+
+key = "haslo123"
+des = DES.new(key, DES.MODE_CBC, iv)
+share_data = multiprocessing.RawArray(ctypes.c_char, encryptedCBC)
+out_data = multiprocessing.RawArray(ctypes.c_char, encryptedCBC)
+pool = multiprocessing.Pool(8)
+starttime = time.time()
+pool.map(de_mapper, range(no_blocks))
+print('cbc Decrypt time para: ', (time.time() - starttime))
+decrypted = bytes(out_data)
+print(decrypted.decode('latin-1'))

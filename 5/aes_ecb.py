@@ -51,8 +51,8 @@ def de_mapper(i):
 
 
 aes = AES.new(key, AES.MODE_ECB)
-share_data = multiprocessing.RawArray(ctypes.c_ubyte, encrypted)
-out_data = multiprocessing.RawArray(ctypes.c_ubyte, encrypted)
+share_data = multiprocessing.RawArray(ctypes.c_char, encrypted)
+out_data = multiprocessing.RawArray(ctypes.c_char, encrypted)
 pool = multiprocessing.Pool(8)
 starttime = time.time()
 pool.map(de_mapper, range(no_blocks))
