@@ -1,4 +1,8 @@
+import time
 from random import randrange
+from pygments.util import xrange
+
+
 def is_prime(n, k=10):
     if n == 2:
         return True
@@ -27,3 +31,16 @@ def is_prime(n, k=10):
         if not check(a, s, d, n):
             return False
     return True
+
+
+def miller(start, end):
+    for i in range(start, end):
+        res = is_prime(i)
+        if res:
+            print(i)
+
+
+if __name__ == "__main__":
+    start = time.time()
+    miller(10**60, 10**60+2000)
+    print('Took {} seconds'.format(time.time() - start))

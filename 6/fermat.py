@@ -1,3 +1,6 @@
+import time
+
+
 def fermat(num):
     if num == 2:
         return True
@@ -14,4 +17,6 @@ def check(start, end):
 
 
 if __name__ == "__main__":
+    start = time.time()
     check(10**60, 10**60+2000)
+    print('Took {} seconds'.format(time.time() - start))

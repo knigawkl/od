@@ -1,4 +1,5 @@
 import math
+import time
 
 
 def erasto(number):
@@ -17,4 +18,6 @@ def erasto(number):
 
 
 if __name__ == "__main__":
-    print(erasto(10))
+    start = time.time()
+    print(erasto(10**4))
+    print('Took {} seconds'.format(time.time() - start))

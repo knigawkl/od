@@ -1,4 +1,5 @@
 from math import sqrt
+import time
 
 
 def mrange(start, stop, step):
@@ -24,4 +25,6 @@ def check(start, end):
 
 
 if __name__ == "__main__":
-    check(10**60, 10**61)
+    start = time.time()
+    check(10**6, 10**6+200)
+    print('Took {} seconds'.format(time.time() - start))
