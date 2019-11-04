@@ -6,13 +6,13 @@ from Crypto.Cipher import DES
 from Crypto.Random import get_random_bytes
 
 def xor64(a, b):
-    block = bytearray(a, 'utf-8')
+    block = bytearray(a, 'latin-1')
     for j in range(8):
         block[j] = ord(a[j]) ^ b[j]
     return block
 
 def encrypt_CBC_serial(key, plain_text, iv):
-    vector = bytearray(plain_text, 'utf-8')
+    vector = bytearray(plain_text, 'latin-1')
     des = DES.new(key)
     for i in range(no_blocks):
         offset = i*block_size
@@ -45,16 +45,18 @@ def de_mapper(i):
     for j in range(1000):
         decrypted = des.decrypt(block)
         block = decrypted
-    print(type(share_data[offset-8:offset + block_size-8]), type(decrypted))
-    decrypted = xor64(share_data[offset-8:offset + block_size-8], decrypted)
+    if i == 0:
+        decrypted = xor64(iv, decrypted)
+    else:
+        decrypted = xor64(share_data[offset - 8:offset + block_size - 8], decrypted)
+
     out_data[offset:offset + block_size] = bytearray(decrypted)
     return i
 
 
-key = "haslo123"
-des = DES.new(key, DES.MODE_CBC, iv)
-share_data = multiprocessing.RawArray(ctypes.c_char, encryptedCBC)
-out_data = multiprocessing.RawArray(ctypes.c_char, encryptedCBC)
+des = DES.new(key)
+share_data = multiprocessing.RawArray(ctypes.c_ubyte, encryptedCBC)
+out_data = multiprocessing.RawArray(ctypes.c_ubyte, encryptedCBC)
 pool = multiprocessing.Pool(8)
 starttime = time.time()
 pool.map(de_mapper, range(no_blocks))

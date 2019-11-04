@@ -6,16 +6,9 @@ from Crypto.Cipher import DES
 from Crypto.Random import get_random_bytes
 
 
-def xor64(a, b):
-    block = bytearray(a, 'utf-8')
-    for j in range(8):
-        block[j] = ord(a[j]) ^ b[j]
-    return block
-
-
-def encrypt_ECB_serial(key, plain_text):
+def encrypt_CBC_serial(key, plain_text, iv):
     vector = bytearray(plain_text, 'utf-8')
-    des = DES.new(key)
+    des = DES.new(key, DES.MODE_CBC, iv)
     for i in range(no_blocks):
         offset = i * block_size
         block = plain_text[offset:offset + block_size]
@@ -26,9 +19,9 @@ def encrypt_ECB_serial(key, plain_text):
     return bytes(vector)
 
 
-def decrypt_ECB_serial(key, encrypted_block):
+def decrypt_CBC_serial(key, encrypted_block, iv):
     vector = bytearray(encrypted_block)
-    des = DES.new(key)
+    des = DES.new(key, DES.MODE_CBC, iv)
     for i in range(no_blocks):
         offset = i * block_size
         block = encrypted_block[offset:offset + block_size]
@@ -46,30 +39,10 @@ block_size = 8
 no_blocks = int(len(plain_text) / block_size)
 
 starttime = time.time()
-encryptedECB = encrypt_ECB_serial(key, plain_text)
+encryptedECB = encrypt_CBC_serial(key, plain_text, iv)
 print('ECB Encrypt time serial: ', (time.time() - starttime))
 
 starttime = time.time()
-decrypted = decrypt_ECB_serial(key, encryptedECB)
+decrypted = decrypt_CBC_serial(key, encryptedECB, iv)
 print('ECB Decrypt time serial: ', (time.time() - starttime))
-
-
-def mapper(i):
-    offset = i * block_size
-    block = bytes(shared_data[offset:offset + block_size])
-    for j in range(1000):
-        decrypted = des.decrypt(block)
-        block = decrypted
-    output_data[offset:offset + block_size] = bytearray(decrypted)
-    return i
-
-
-des = DES.new(key)
-shared_data = multiprocessing.RawArray(ctypes.c_ubyte, encryptedECB)
-output_data = multiprocessing.RawArray(ctypes.c_ubyte, encryptedECB)
-pool = multiprocessing.Pool(8)
-starttime = time.time()
-pool.map(mapper, range(no_blocks))
-print('ECB Decrypt time parallel: ', (time.time() - starttime))
-decrypted = bytes(output_data)
 print(decrypted)
