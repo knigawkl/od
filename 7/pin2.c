@@ -8,6 +8,10 @@ int main(int ac, char **av)
     if (av[1][0] == '-') {
         printf("Atak zablokowany\n");
         exit(1);
+    }
+    if (!isdigit(av[1][0])) {
+        printf("Atak zablokowany\n");
+        exit(1);
     } 
     sscanf(av[1], "%4d", &pin);
     if (pin == TAJNY_PIN) {
@@ -19,4 +23,3 @@ int main(int ac, char **av)
         printf("PIN bledny\n");
     }
 }
-
