@@ -39,4 +39,4 @@ for key in keys:
         if decrypted:
             print("Odszyfrowano! Twoja wiadomość:")
             print(decrypted)
-            print(decrypted.decode('latin-1'))
+            #print(decrypted.decode('latin-1'))
